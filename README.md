@@ -26,18 +26,6 @@ The machine accepts coins, allows users to select products, and processes paymen
 
 If the machine runs out of stock or change, it will prompt the service person to refill.
 
-## Vending Machine Interface
-
-Here’s a simple representation of the vending machine using text characters:
-   _______
-  |       |
-  |  VENDING|
-  |  MACHINE|
-  |_______|
-   ||  ||
-   ||  ||
-
-
 ## How to Run
 
 1. Clone the repository:  
