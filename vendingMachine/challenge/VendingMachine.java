@@ -26,11 +26,7 @@ public class VendingMachine{
         while (true) {
 
             System.out.println("Type 0 to cancel or 1 to continue Replenish");
-            while (!readLine.hasNextInt()) {
-                System.out.println("invalid enter");
-                readLine.next();
-            }
-            int exitOrContinue = readLine.nextInt();
+            int exitOrContinue = getValidIntInput(readLine);
             while (exitOrContinue != 0 && exitOrContinue != 1) {
                 System.out.println("invalid enter");
                 exitOrContinue = readLine.nextInt();
@@ -40,21 +36,11 @@ public class VendingMachine{
             } else {
 
                 System.out.println("Please type the Acess Key");
-                while (!readLine.hasNextInt()) {
-                    System.out.println("invalid enter");
-                    readLine.next();
-                }
-                int accesKey = readLine.nextInt();
+                int accesKey = getValidIntInput(readLine);;
                 if (servicePerson.verifyAccess(accesKey)) {
-                    for (int i = 0; i < productsOfVendingMachine.size(); i++) {
-                        System.out.println(i + ": " + productsOfVendingMachine.get(i).getName() + "___" + productsOfVendingMachine.get(i).getPrice() + "$ ___" + productsOfVendingMachine.get(i).getQuantity());
-                    }
+                    displayProducts();
                     System.out.println("type the number of product and quantity, in this format: 1 10");
-                    while (!readLine.hasNextInt()) {
-                        System.out.println("Invalid number ");
-                        readLine.next();
-                    }
-                    int product = readLine.nextInt();
+                    int product = getValidIntInput(readLine);
                     while (product < 0 || product >= productsOfVendingMachine.size()) {
                         System.out.println("Invalid Product, re-type");
                         if (readLine.hasNextInt()) {
@@ -63,18 +49,11 @@ public class VendingMachine{
                             readLine.next();
                         }
                     }
-                    while (!readLine.hasNextInt()) {
-                        System.out.println("Invalid quantity, re-type");
-                        readLine.next();
-                    }
-                    int quantity = readLine.nextInt();
+                    int quantity = getValidIntInput(readLine);
                     productsOfVendingMachine.get(product).setQuantity(productsOfVendingMachine.get(product).getQuantity()+quantity);
-                    for (int i = 0; i < productsOfVendingMachine.size(); i++) {
-                        System.out.println(i + ": " + productsOfVendingMachine.get(i).getName() + "___" + productsOfVendingMachine.get(i).getPrice() + "$ ___" + productsOfVendingMachine.get(i).getQuantity());
-                    }
+                    displayProducts();
                 } else {
                     System.out.println("access denied!");
-                    replenishStock();
                 }
             }
         }
@@ -88,11 +67,8 @@ public class VendingMachine{
         while (true) {
 
             System.out.println("Type 0 to cancel or 1 to continue Replenish");
-            while (!readLine.hasNextInt()) {
-                System.out.println("invalid enter");
-                readLine.next();
-            }
-            int exitOrContinue = readLine.nextInt();
+
+            int exitOrContinue = getValidIntInput(readLine);
             while (exitOrContinue != 0 && exitOrContinue != 1) {
                 System.out.println("invalid enter");
                 exitOrContinue = readLine.nextInt();
@@ -101,21 +77,11 @@ public class VendingMachine{
                 break;
             } else {
                 System.out.println("Please type the Acess Key");
-                while (!readLine.hasNextInt()) {
-                    System.out.println("invalid enter");
-                    readLine.next();
-                }
-                int accesKey = readLine.nextInt();
+                int accesKey = getValidIntInput(readLine);
                 if (servicePerson.verifyAccess(accesKey)) {
-                    for (int i = 0; i < checkout.getCoinList().size(); i++) {
-                        System.out.println(i + ": " + checkout.getCoinList().get(i).getValue() + " " + checkout.getCoinList().get(i).getQuantity());
-                    }
+                    displayChange();
                     System.out.println("type the value of coin and quantity, in this format: 0.25 10");
-                    while (!readLine.hasNextDouble()) {
-                        System.out.println("Invalid number ");
-                        readLine.next();
-                    }
-                    double coinValue = readLine.nextDouble();
+                    double coinValue = getValidDoubleInput(readLine);
                     while (!checkout.isValidCoin(coinValue)) {
                         System.out.println("Invalid coin value, re-type");
                         if (readLine.hasNextDouble()) {
@@ -124,21 +90,43 @@ public class VendingMachine{
                             readLine.next();
                         }
                     }
-                    while (!readLine.hasNextInt()) {
-                        System.out.println("Invalid quantity, re-type");
-                        readLine.next();
-                    }
-                    int amount = readLine.nextInt();
+                    int amount = getValidIntInput(readLine);;
                     System.out.println("replenishing change");
                     checkout.insertCoinQuantity(coinValue, amount);
                     System.out.println("the actual change is:");
-                    for (int i = 0; i < checkout.getCoinList().size(); i++) {
-                        System.out.println(checkout.getCoinList().get(i).getValue() + " " + checkout.getCoinList().get(i).getQuantity());
-                    }
+                    displayChange();
                 } else {
                     System.out.println("access denied!");
                 }
             }
+        }
+    }
+
+    private int getValidIntInput(Scanner readLine) {
+        while (!readLine.hasNextInt()) {
+            System.out.println("Invalid input! Please enter a valid number.");
+            readLine.next();
+        }
+        return readLine.nextInt();
+    }
+
+    private double getValidDoubleInput(Scanner readLine) {
+        while (!readLine.hasNextDouble()) {
+            System.out.println("Invalid input! Please enter a valid number.");
+            readLine.next();
+        }
+        return readLine.nextDouble();
+    }
+
+    private void displayProducts() {
+        for (int i = 0; i < productsOfVendingMachine.size(); i++) {
+            System.out.println(i + ": " + productsOfVendingMachine.get(i).getName() + "___" + productsOfVendingMachine.get(i).getPrice() + "$ ___" + productsOfVendingMachine.get(i).getQuantity());
+        }
+    }
+
+    private void  displayChange(){
+        for (int i = 0; i < checkout.getCoinList().size(); i++) {
+            System.out.println(i + ": " + checkout.getCoinList().get(i).getValue() + " " + checkout.getCoinList().get(i).getQuantity());
         }
     }
 
@@ -169,7 +157,7 @@ public class VendingMachine{
         while (true) {
             System.out.println("""
                     
-                    type: 0 for mainitence
+                    type: 0 for mainitence/replenish
                     type: 1 for see Change
                     type: 2 for start vending
                     type: 3 to turn vending machine off""");
@@ -178,18 +166,15 @@ public class VendingMachine{
                 readLine.next();
             }
 
-            int interfaceChoose = readLine.nextInt();
+            int interfaceChoose = getValidIntInput(readLine);;
 
             if (interfaceChoose == 0) {
                 System.out.println("""
                         
                         type: 1 for replenish change
                         type: 2 for replenish products""");
-                while (!readLine.hasNextInt()) {
-                    System.out.println("Invalid input! Type 1 or 2.");
-                    readLine.next();
-                }
-                int maintenanceChoice = readLine.nextInt();
+
+                int maintenanceChoice = getValidIntInput(readLine);
                 while (maintenanceChoice != 1 && maintenanceChoice != 2) {
                     System.out.println("Invalid input! Type 1 or 2.");
                     if (readLine.hasNextInt()){
@@ -204,9 +189,7 @@ public class VendingMachine{
                     replenishStock();
                 }
             } else if (interfaceChoose == 1) {
-                for (int i = 0; i < checkout.getCoinList().size(); i++) {
-                    System.out.println(checkout.getCoinList().get(i).getValue() + " " + checkout.getCoinList().get(i).getQuantity());
-                }
+                displayChange();;
             } else if (interfaceChoose == 2) {
                 underMaintenance = false;
 
@@ -216,6 +199,7 @@ public class VendingMachine{
                     int enterMaintenance = productsOfVendingMachine.size();
 
                     System.out.println("""
+                            
                             Itens in this machine:
                             \nnumber/name/price/quantity""");
 
@@ -236,11 +220,7 @@ public class VendingMachine{
                     }
 
                     System.out.println("\ntype the number for chose your item or type: " + enterMaintenance + " for maintenance");
-                    while (!readLine.hasNextInt()) {
-                        System.out.println("Invalid input! Please enter a valid number.");
-                        readLine.next();
-                    }
-                    int chose = readLine.nextInt();
+                    int chose = getValidIntInput(readLine);;
                     if (chose == enterMaintenance) {
                         underMaintenance = true;
                     } else {
@@ -257,12 +237,7 @@ public class VendingMachine{
 
                             }
 
-                            while (!readLine.hasNextInt()) {
-                                System.out.println("Invalid input! Please enter a valid number.");
-                                readLine.next();
-                            }
-
-                            chose = readLine.nextInt();
+                            chose = getValidIntInput(readLine);;
                         }
                         Product selectedProduct = productsOfVendingMachine.get(chose);
 
@@ -294,12 +269,16 @@ public class VendingMachine{
                                 checkout.insertCoinQuantity(checkout.getCoinInPreOrder().get(i).getValue(), checkout.getCoinInPreOrder().get(i).getQuantity());
                             }
                             productsOfVendingMachine.get(chose).setQuantity(productsOfVendingMachine.get(chose).getQuantity() - 1);
+                            checkout.returnCoinInPreOrder();
                         } else if (checkout.getTotalInPreOrder() > selectedProduct.getPrice()) {
                             double change = checkout.getTotalInPreOrder() - selectedProduct.getPrice();
                             productsOfVendingMachine.get(chose).setQuantity(productsOfVendingMachine.get(chose).getQuantity() - 1);
-                            while (change > 0.00) {
+                            checkout.returnCoinInPreOrder();
+                            System.out.println("\nyour change is: "+change+"\n");
+                            while (change > 0.05) {
                                 for (int i = checkout.getCoinList().size() - 1; i >= 0; i--) {
                                     if (checkout.getCoinList().get(i).getValue() <= change && checkout.getCoinList().get(i).getQuantity() > 0) {
+                                        System.out.println("returning coin: "+checkout.getCoinList().get(i).getValue());
                                         checkout.getCoinList().get(i).setQuantity(checkout.getCoinList().get(i).getQuantity() - 1);
                                         change = change - checkout.getCoinList().get(i).getValue();
                                     } else if (i == 0 && checkout.getCoinList().get(i).getQuantity() == 0) {
