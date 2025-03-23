@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 
+
 public class VendingMachine{
     private Checkout checkout;
     private List<Product> productsOfVendingMachine;
