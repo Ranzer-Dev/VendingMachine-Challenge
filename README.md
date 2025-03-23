@@ -34,7 +34,7 @@ If the machine runs out of stock or change, it will prompt the service person to
 2. Navigate to the project directory:  
    `cd vending-machine`
 
-3. Run the project using your preferred IDE
+3. Open the project using your preferred IDE
 
 4. Find and run the main class that contains the main(String[] args) method.
 
